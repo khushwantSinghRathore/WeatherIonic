@@ -1,20 +1,117 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <ion-grid>
+    <ion-row class="customheader">
+      <ion-col size="3">
+        <ion-icon name="apps-sharp"></ion-icon>
+      </ion-col>
+      <ion-col>
+       <p> Weather Forcast </p> 
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="searchbar">
+      <ion-col>
+       <ion-item>
+        <ion-icon name="search-outline" slot="end" (click)="getname()" ></ion-icon>
+        <ion-input placeholder="Search Your City" type="text" [(ngModel)]="city" (keyup.enter)="getname()"></ion-input>
+       </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <div *ngIf="citywether">
+    <ion-row class="detailcard">
+      <ion-col>
+        <ion-card>
+          <div class="dateday">
+            <p class="textday">Today</p>
+            <p class="textdate">{{localtime}}</p>
+          </div>
+
+          <div class="weatherdata">
+            <p class="text"> <span class="plus" *ngIf="citywether.Temperature.Metric.Value > 1"> + </span>{{citywether.Temperature.Metric.Value}} <span class="unit">°C</span> </p>
+            <div class="image">
+              <img  [src]='img'>
+            </div>
+          </div>
+          <div class="location">
+            <p>  <ion-icon name="location-sharp"></ion-icon> {{locationdata.EnglishName}}, {{locationdata.Country.EnglishName}} </p>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="gridcard">
+      <ion-col>
+        <div class="humidity">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="4" style="text-align: end;">
+                <img src="assets/images/humidity.png">
+              </ion-col>
+              <ion-col>
+                <p class="value">
+                  {{citywether.IndoorRelativeHumidity}}%
+                </p>
+                <p>
+                  Humidity
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="presure">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="4" style="text-align: end;">
+                <img src="assets/images/pressure.png">
+              </ion-col>
+              <ion-col>
+                <p class="value">
+                  {{citywether.Pressure.Metric.Value}}{{citywether.Pressure.Metric.Unit}}
+                </p>
+                <p>
+                  Pressure
+                </p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ion-col>
+    </ion-row>
+
   </div>
+
+  <div *ngIf="citywether">
+    <ion-row class="nextdaygrid">
+      <ion-col *ngFor="let a of forecastdata | slice:0:3; let i = index">
+        <ion-card>
+          <div>
+            <p class="text"> {{ getCelsius(a?.RealFeelTemperature?.Maximum.Value) }} <span>°C</span></p>
+            <p>{{ getDay(a?.Date) }}</p>
+          </div>
+        </ion-card>
+      </ion-col>
+      <!-- <ion-col>
+        <ion-card style="margin-right: 10%;">
+          <div>
+            <p class="text">+30 <span>°C</span></p>
+            <p>Saturday</p>
+          </div>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <div>
+            <p class="text">+30 <span>°C</span></p>
+            <p>sunday</p>
+          </div>
+        </ion-card>
+      </ion-col> -->
+    </ion-row>
+  </div>
+  </ion-grid>
+ 
 </ion-content>
